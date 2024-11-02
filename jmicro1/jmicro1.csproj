@@ -1,8 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
-      <ProjectReference Include="..\..\TelegramWebApplication\TelegramWebApplication.Infrastructure\TelegramWebApplication.Infrastructure.csproj" />
       <ProjectReference Include="..\..\ThinServer\ThinServer\ThinServer.csproj" />
+      <ProjectReference Include="..\..\TeleRoute\TeleRoute.SimpleNetFramework\TeleRoute.SimpleNetFramework.csproj" />
+      <ProjectReference Include="..\..\TeleRoute\TeleRoute.Infrastructure\TeleRoute.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Telegram.Bot" Version="21.11.0" />
     </ItemGroup>
 
     <PropertyGroup>

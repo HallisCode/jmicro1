@@ -3,10 +3,11 @@ using System.Reflection;
 using System.Threading.Tasks;
 using jmicro1.Adapters;
 using Microsoft.Extensions.DependencyInjection;
-using TelegramWebApplication.Core.Routing;
-using TelegramWebApplication.Infrastructure;
-using TelegramWebApplication.Infrastructure.Routing;
-using TelegramWebApplication.Infrastructure.Routing.Middlewares;
+using Telegram.Bot;
+using TeleRoute.Core.Routing;
+using TeleRoute.Infrastructure.Routing;
+using TeleRoute.SimpleNetFramework;
+using TeleRoute.SimpleNetFramework.Middlewares;
 using ThinServer;
 using ThinServer.HTTP;
 using ThinServer.Logger;
@@ -31,19 +32,27 @@ class Program
         telegramAppBuilder.SetServer(serverAdapter);
 
         // Маршрутизация
-        ITelegramRouteBuilder telegramRouteBuilder = new TelegramRouteBuilder();
-        telegramRouteBuilder.AddFromAssembly(Assembly.GetAssembly(typeof(Program)));
-        ITelegramRouteTree telegramRouteTree = telegramRouteBuilder.Build();
+        IRouteBuilder routeBuilder = new RouteBuilder();
+        routeBuilder.AddFromAssembly(Assembly.GetAssembly(typeof(Program)));
+        IRouteTree RouteTree = routeBuilder.Build();
+
+        telegramAppBuilder.Services.AddSingleton<IRouteTree>(RouteTree);
+        telegramAppBuilder.Services.AddSingleton<IRouteHandler, RouteHandler>();
+
+        // Телеграм бот
+        TelegramBotClient bot = new TelegramBotClient("ff");
+        telegramAppBuilder.Services.AddSingleton<ITelegramBotClient, TelegramBotClient>();
+
 
         // Внедряем маршрутизацию
-        telegramAppBuilder.Services.AddSingleton<ITelegramRouteTree>(telegramRouteTree);
+        telegramAppBuilder.Services.AddSingleton<IRouteTree>(RouteTree);
 
         // Собираем приложение
-        TelegramWebApplication.Infrastructure.TelegramWebApplication
-            telegramWebApplication = telegramAppBuilder.Build();
+        TelegramWebApplication telegramApp = telegramAppBuilder.Build();
 
-        telegramWebApplication.UseMiddleware<RoutingMiddleware>();
+        // Добавляем маршрутизацию в pipeline
+        telegramApp.UseMiddleware<RoutingMiddleware>();
 
-        await telegramWebApplication.StartAsync();
+        await telegramApp.StartAsync();
     }
 }
