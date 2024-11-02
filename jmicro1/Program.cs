@@ -33,10 +33,10 @@ class Program
 
         // Маршрутизация
         IRouteBuilder routeBuilder = new RouteBuilder();
-        routeBuilder.AddFromAssembly(Assembly.GetAssembly(typeof(Program)));
-        IRouteTree RouteTree = routeBuilder.Build();
+        routeBuilder.AddFromAssembly(Assembly.GetAssembly(typeof(Program))!);
+        IRouteTree routeTree = routeBuilder.Build();
 
-        telegramAppBuilder.Services.AddSingleton<IRouteTree>(RouteTree);
+        telegramAppBuilder.Services.AddSingleton<IRouteTree>(routeTree);
         telegramAppBuilder.Services.AddSingleton<IRouteHandler, RouteHandler>();
 
         // Телеграм бот
@@ -45,7 +45,7 @@ class Program
 
 
         // Внедряем маршрутизацию
-        telegramAppBuilder.Services.AddSingleton<IRouteTree>(RouteTree);
+        telegramAppBuilder.Services.AddSingleton<IRouteTree>(routeTree);
 
         // Собираем приложение
         TelegramWebApplication telegramApp = telegramAppBuilder.Build();
