@@ -2,8 +2,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\ThinServer\ThinServer\ThinServer.csproj" />
-      <ProjectReference Include="..\..\TeleRoute\TeleRoute.SimpleNetFramework\TeleRoute.SimpleNetFramework.csproj" />
       <ProjectReference Include="..\..\TeleRoute\TeleRoute.Infrastructure\TeleRoute.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\TelegramWebApp\TelegramWebApp\TelegramWebApp.csproj" />
     </ItemGroup>
 
     <ItemGroup>

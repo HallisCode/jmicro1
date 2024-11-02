@@ -1,13 +1,14 @@
-﻿using System.Net;
+﻿
+using System;
+using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using jmicro1.Adapters;
 using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot;
+using TelegramWebApp;
 using TeleRoute.Core.Routing;
 using TeleRoute.Infrastructure.Routing;
-using TeleRoute.SimpleNetFramework;
-using TeleRoute.SimpleNetFramework.Middlewares;
 using ThinServer;
 using ThinServer.HTTP;
 using ThinServer.Logger;
@@ -40,9 +41,8 @@ class Program
         telegramAppBuilder.Services.AddSingleton<IRouteHandler, RouteHandler>();
 
         // Телеграм бот
-        TelegramBotClient bot = new TelegramBotClient("ff");
-        telegramAppBuilder.Services.AddSingleton<ITelegramBotClient, TelegramBotClient>();
-
+        TelegramBotClient bot = new TelegramBotClient("nope");
+        telegramAppBuilder.Services.AddSingleton<ITelegramBotClient>(bot);
 
         // Внедряем маршрутизацию
         telegramAppBuilder.Services.AddSingleton<IRouteTree>(routeTree);
@@ -53,6 +53,14 @@ class Program
         // Добавляем маршрутизацию в pipeline
         telegramApp.UseMiddleware<RoutingMiddleware>();
 
-        await telegramApp.StartAsync();
-    }
+        try
+        {
+            await telegramApp.StartAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }  
+  }
 }
