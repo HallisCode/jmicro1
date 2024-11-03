@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Network.Core.HTTP;
 using SimpleNetFramework.Core.Server;
-using SimpleNetFramework.Core.Server.Types;
-using ThinServer.HTTP;
+
 
 namespace jmicro1.Adapters
 {
@@ -26,7 +26,7 @@ namespace jmicro1.Adapters
             _httpObject = httpObject;
 
             Protocol = _httpObject.Protocol!.ToString();
-            StatusCode = _httpObject.Code!.Value.Code;
+            StatusCode = (int)_httpObject.Code!;
             Message = _httpObject.Message!;
             Headers = _httpObject.Headers is null
                 ? new Dictionary<string, string>()

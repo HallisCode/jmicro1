@@ -1,9 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
-      <ProjectReference Include="..\..\ThinServer\ThinServer\ThinServer.csproj" />
       <ProjectReference Include="..\..\TeleRoute\TeleRoute.Infrastructure\TeleRoute.Infrastructure.csproj" />
       <ProjectReference Include="..\..\TelegramWebApp\TelegramWebApp\TelegramWebApp.csproj" />
+      <ProjectReference Include="..\..\Network\Network.Core\Network.Core.csproj" />
+      <ProjectReference Include="..\..\Network\Network.TCP\Network.TCP.csproj" />
+      <ProjectReference Include="..\..\Network\Network.HTTP\Network.HTTP.csproj" />
+      <ProjectReference Include="..\..\Network\Network.ThinServer\Network.ThinServer.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,6 +1,6 @@
 using System;
+using Network.Core.Server.Models;
 using SimpleNetFramework.Core.Server;
-using ThinServer;
 
 namespace jmicro1.Adapters
 {

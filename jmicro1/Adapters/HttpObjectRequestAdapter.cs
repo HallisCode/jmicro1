@@ -1,9 +1,11 @@
 using System;
+using System.Net.Http;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Net;
+using Network.Core.HTTP;
+using Network.Core.HTTP.Types;
 using SimpleNetFramework.Core.Server;
-using ThinServer.HTTP;
-using ThinServer.HTTP.Types;
 
 namespace jmicro1.Adapters
 {
@@ -32,7 +34,7 @@ namespace jmicro1.Adapters
 
             _httpRequest = httpRequest;
 
-            Method = _ConvertMethod(_httpRequest.Method);
+            Method = _httpRequest.Method;
             URL = _httpRequest.Route;
 
             Code = null;
@@ -46,18 +48,6 @@ namespace jmicro1.Adapters
                 ? new Dictionary<string, string>().AsReadOnly()
                 : httpRequest.Headers.AsReadOnly();
             Body = httpRequest.Body is null ? new byte[0].AsReadOnly() : httpRequest.Body.AsReadOnly();
-        }
-
-        private HttpMethod? _ConvertMethod(SimpleNetFramework.Core.Server.Types.HttpMethod method)
-        {
-            return method switch
-            {
-                SimpleNetFramework.Core.Server.Types.HttpMethod.Get => HttpMethod.Get,
-                SimpleNetFramework.Core.Server.Types.HttpMethod.Post => HttpMethod.Post,
-                SimpleNetFramework.Core.Server.Types.HttpMethod.Put => HttpMethod.Put,
-                SimpleNetFramework.Core.Server.Types.HttpMethod.Delete => HttpMethod.Delete,
-                _ => null,
-            };
         }
 
         private HttpProtocol? _ConvertProtocol(string protocol)

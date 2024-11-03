@@ -1,16 +1,16 @@
+
 using System;
 using System.Threading.Tasks;
+using Network.Core.Server.Models;
 using SimpleNetFramework.Core.Server;
-using ThinServer;
-using IServer = SimpleNetFramework.Core.Server.IServer;
 
 namespace jmicro1.Adapters
 {
     public class ServerAdapter : IServer
     {
-        private ThinServer.IServer _server;
+        private Network.Core.Server.IServer _server;
 
-        public ServerAdapter(ThinServer.IServer server)
+        public ServerAdapter(Network.Core.Server.IServer server)
         {
             _server = server;
         }

@@ -1,9 +1,11 @@
 using System;
+using System.Net.Http;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Net;
+using Network.Core.HTTP;
+using Network.Core.HTTP.Types;
 using SimpleNetFramework.Core.Server;
-using ThinServer.HTTP;
-using ThinServer.HTTP.Types;
 
 namespace jmicro1.Adapters
 {
@@ -34,7 +36,7 @@ namespace jmicro1.Adapters
             Method = null;
             Message = _httpResponse.Message;
             URL = null;
-            Code = new HttpStatusCode(_httpResponse.StatusCode);
+            Code = (HttpStatusCode)_httpResponse.StatusCode;
 
             Protocol = _ConvertProtocol(_httpResponse.Protocol);
 
