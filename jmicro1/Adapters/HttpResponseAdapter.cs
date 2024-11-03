@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Network.Core.HTTP;
 using SimpleNetFramework.Core.Server;
 
@@ -12,7 +13,7 @@ namespace jmicro1.Adapters
         private readonly IHttpObject _httpObject;
 
         public string Protocol { get; set; }
-        public int StatusCode { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
         public string Message { get; set; }
 
         public Dictionary<string, string> Headers { get; set; }
@@ -26,7 +27,7 @@ namespace jmicro1.Adapters
             _httpObject = httpObject;
 
             Protocol = _httpObject.Protocol!.ToString();
-            StatusCode = (int)_httpObject.Code!;
+            StatusCode = (HttpStatusCode)_httpObject.Code!;
             Message = _httpObject.Message!;
             Headers = _httpObject.Headers is null
                 ? new Dictionary<string, string>()

@@ -55,7 +55,7 @@ class Program
 
 
         // Телеграм бот
-        TelegramBotClient bot = new TelegramBotClient("nope");
+        TelegramBotClient bot = new TelegramBotClient("te");
         telegramAppBuilder.Services.AddSingleton<ITelegramBotClient>(bot);
 
 
