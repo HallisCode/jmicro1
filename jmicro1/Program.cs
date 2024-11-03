@@ -1,22 +1,25 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using jmicro1.Adapters;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Network.Core.HTTP;
 using Network.Core.HTTP.Serialization.Exceptions;
-using Network.Core.Server;
-using Network.Core.TCP.TCP;
 using Network.HTTP.Serialization;
-using Network.TCP;
-using Network.ThinServer.Logger;
+using SimpleNetFramework.Infrastructure.Middlewares;
 using Telegram.Bot;
+using Telegram.Bot.Types;
 using TelegramWebApp;
 using TeleRoute.Core.Routing;
-using TeleRoute.Infrastructure.Routing;
 using ThinServer.TCP;
 using HttpListener = Network.HTTP.HttpListener;
+using IRouteBuilder = TeleRoute.Core.Routing.IRouteBuilder;
+using IRouteHandler = TeleRoute.Core.Routing.IRouteHandler;
+using IServer = Network.Core.Server.IServer;
+using RouteBuilder = TeleRoute.Infrastructure.Routing.RouteBuilder;
+using RouteHandler = TeleRoute.Infrastructure.Routing.RouteHandler;
+using TcpListener = Network.TCP.TcpListener;
 
 namespace jmicro1;
 
@@ -35,7 +38,10 @@ class Program
 
 
         // Инициализируем сервер
-        ILogger logger = new Logger();
+        ILogger<Network.ThinServer.ThinServer> logger = LoggerFactory.Create(
+            configure => configure.AddConsole()
+        ).CreateLogger<Network.ThinServer.ThinServer>();
+
         IServer server = new Network.ThinServer.ThinServer(httpListener, logger);
         ServerAdapter serverAdapter = new ServerAdapter(server);
 
@@ -55,7 +61,7 @@ class Program
 
 
         // Телеграм бот
-        TelegramBotClient bot = new TelegramBotClient("te");
+        TelegramBotClient bot = new TelegramBotClient("f");
         telegramAppBuilder.Services.AddSingleton<ITelegramBotClient>(bot);
 
 
@@ -66,6 +72,8 @@ class Program
         // Собираем приложение
         TelegramWebApplication telegramApp = telegramAppBuilder.Build();
 
+        // Добавляем глобальный отлов ошибок
+        telegramApp.UseMiddleware<ExceptionHandlerMiddleware<Update>>();
 
         // Добавляем маршрутизацию в pipeline
         telegramApp.UseMiddleware<RoutingMiddleware>();

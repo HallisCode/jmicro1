@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -14,10 +15,12 @@ namespace jmicro1.Controllers
     public class PrivateChatController
     {
         private readonly ITelegramBotClient _botClient;
+        private readonly ILogger<PrivateChatController> _logger;
 
-        public PrivateChatController(ITelegramBotClient botClient)
+        public PrivateChatController(ILogger<PrivateChatController> logger, ITelegramBotClient botClient)
         {
             _botClient = botClient;
+            _logger = logger;
         }
 
         [TeleRoute]
@@ -32,6 +35,11 @@ namespace jmicro1.Controllers
                     MessageId = update.Message.MessageId
                 }
             );
+
+            _logger.LogInformation($"New message from : " +
+                                   $"\n{update.Message.From.FirstName} {update.Message.From.LastName}" +
+                                   $"\n\tid {update.Message.From.Id}"
+            );
         }
 
         [TeleRoute]
@@ -40,7 +48,7 @@ namespace jmicro1.Controllers
         {
             await _botClient.SendTextMessageAsync(
                 chatId: update.Message.Chat.Id,
-                text: "Hello mr.Developer"
+                text: "Hello Mr.Developer"
             );
         }
 
@@ -51,6 +59,22 @@ namespace jmicro1.Controllers
             await _botClient.SendTextMessageAsync(
                 chatId: update.Message.Chat.Id,
                 text: $"su",
+                replyParameters: new ReplyParameters()
+                {
+                    ChatId = update.Message.Chat.Id,
+                    MessageId = update.Message.MessageId
+                }
+            );
+        }
+
+        [TeleRoute]
+        [IsCommandFilter("sudo")]
+        [WhiteListFilter(689425288)]
+        public async Task HandleWhiteListSuperUser(Update update)
+        {
+            await _botClient.SendTextMessageAsync(
+                chatId: update.Message.Chat.Id,
+                text: $"already su",
                 replyParameters: new ReplyParameters()
                 {
                     ChatId = update.Message.Chat.Id,
