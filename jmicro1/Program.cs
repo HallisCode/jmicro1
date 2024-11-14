@@ -1,19 +1,11 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
-using jmicro1.Adapters;
-using Microsoft.Extensions.Logging;
-using Network.Core.HTTP;
-using Network.Core.HTTP.Serialization.Exceptions;
-using Network.HTTP.Serialization;
-using SimpleNetFramework.Infrastructure.Middlewares;
+﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Telegram.Bot.Types;
-using TelegramWebApp;
-using TelegramWebApp.Extensions;
-using ThinServer.TCP;
-using HttpListener = Network.HTTP.HttpListener;
-using IServer = Network.Core.Server.IServer;
-using TcpListener = Network.TCP.TcpListener;
+using jmicro1.Configuration;
+using jmicro1.Middlewares;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Telegram.Bot;
 
 namespace jmicro1;
 
@@ -21,43 +13,46 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        // Инициализируем TcpListener
-        IPEndPoint endPoint = IPEndPoint.Parse("0.0.0.0:8080");
-        ITcpListener tcpListener = new TcpListener(endPoint);
-        
-        // Инициализируем HttpListener
-        IHttpSerializer httpSerializer = new HttpSerializer();
-        IHttpListener httpListener = new HttpListener(httpSerializer, tcpListener);
-        
-        // Инициализируем сервер
-        ILogger<Network.ThinServer.ThinServer> logger = LoggerFactory.Create(
-            configure => configure.AddConsole()
-        ).CreateLogger<Network.ThinServer.ThinServer>();
-
-        IServer server = new Network.ThinServer.ThinServer(httpListener, logger);
-        ServerAdapter serverAdapter = new ServerAdapter(server);
-        
         // Билдер TelegramWebApplication
-        TelegramWebApplicationBuilder telegramAppBuilder = new TelegramWebApplicationBuilder();
-        telegramAppBuilder.SetServer(serverAdapter);
-        
-        // Внедряем Телеграмм бота
-        telegramAppBuilder.AddTelegramBot(() => telegramAppBuilder.Configuration["TELEGRAM_BOT_TOKEN"]!);
-        
-        // Внедряем маршрутизацию
-        telegramAppBuilder.AddTeleRouting(config => config.AddFromAssembly(typeof(Program).Assembly));
-        
-        
+        WebApplicationBuilder webAppBuilder = WebApplication.CreateBuilder();
+
+
+        // Configuration
+        webAppBuilder.Configuration.AddJsonFile("settings.json");
+        webAppBuilder.Configuration.AddEnvironmentVariables();
+
+        // DI: logic asp.net routing
+        webAppBuilder.Services.AddMvcCore();
+
+        // DI: telegram client
+        TelegramBotClient telegramBotClient = new TelegramBotClient(webAppBuilder.Configuration["TELEGRAM_BOT_TOKEN"]!);
+        webAppBuilder.Services.AddSingleton<ITelegramBotClient>(telegramBotClient);
+        webAppBuilder.Services.ConfigureTelegramBotMvc();
+
+        // DI: TeleRoute
+        webAppBuilder.Services.AddTeleRoute(opt => { opt.AddFromAssembly(typeof(Program).Assembly); });
+
+        // DI: logic services
+
+
+        // DI: MassTransit (RabbitMQ)
+        webAppBuilder.Services.AddConfiguredMassTransit(
+            rabbitMqHost: webAppBuilder.Configuration["RabbitMQ:host"]!,
+            rabbitMqUsername: webAppBuilder.Configuration["RabbitMQ:username"]!,
+            rabbitMqPassword: webAppBuilder.Configuration["RabbitMQ:password"]!
+        );
+
+
         // Собираем приложение
-        TelegramWebApplication telegramApp = telegramAppBuilder.Build();
+        WebApplication webApp = webAppBuilder.Build();
 
-        // Добавляем глобальный отлов ошибок
-        telegramApp.UseMiddleware<ExceptionHandlerMiddleware<Update>>();
+        // Middlewares
+        webApp.UseMiddleware<ExceptionMiddleware>();
 
-        // Добавляем маршрутизацию в pipeline
-        telegramApp.UseTeleRouting();
+        // Asp.net routing
+        webApp.MapControllers();
 
         // Запускаем сервер
-        await telegramApp.StartAsync();
+        webApp.Run();
     }
 }

@@ -1,17 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\TeleRoute\TeleRoute.Infrastructure\TeleRoute.Infrastructure.csproj" />
-      <ProjectReference Include="..\..\TelegramWebApp\TelegramWebApp\TelegramWebApp.csproj" />
-      <ProjectReference Include="..\..\Network\Network.Core\Network.Core.csproj" />
-      <ProjectReference Include="..\..\Network\Network.TCP\Network.TCP.csproj" />
-      <ProjectReference Include="..\..\Network\Network.HTTP\Network.HTTP.csproj" />
-      <ProjectReference Include="..\..\Network\Network.ThinServer\Network.ThinServer.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Telegram.Bot" Version="21.11.0" />
-    </ItemGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
@@ -19,5 +6,16 @@
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\TeleRoute\TeleRoute.Infrastructure\TeleRoute.Infrastructure.csproj" />
+      <ProjectReference Include="..\Achievements.Contracts\Achievements.Contracts.csproj" />
+      <ProjectReference Include="..\jmicro1.Contracts\jmicro1.Contracts.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.1" />
+      <PackageReference Include="Telegram.Bot" Version="21.11.0" />
+    </ItemGroup>
 
 </Project>
