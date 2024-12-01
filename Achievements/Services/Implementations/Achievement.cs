@@ -9,9 +9,16 @@ namespace Achievements.Services.Implementations
     {
         private readonly IAchievementRepository _achievementRepository;
 
-        public AchievementService(IAchievementRepository achievementRepository)
+        private readonly IUserChatStatsRepository _userChatStatsRepository;
+
+        public AchievementService(
+            IAchievementRepository achievementRepository,
+            IUserChatStatsRepository userChatStatsRepository
+            )
+        
         {
             _achievementRepository = achievementRepository;
+            _userChatStatsRepository = userChatStatsRepository;
         }
 
         public async Task<Models.Achievement> CreateAchievementAsync(long chatId, string title, long messages)
@@ -54,6 +61,10 @@ namespace Achievements.Services.Implementations
             {
                 if (achievement.Messages == userChatStats.Messages)
                 {
+                    userChatStats.Awards.Add(achievement.Title);
+
+                    await _userChatStatsRepository.UpdateAsync(userChatStats);
+
                     return achievement;
                 }
             }

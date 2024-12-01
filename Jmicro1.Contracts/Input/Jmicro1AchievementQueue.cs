@@ -1,4 +1,4 @@
-namespace jmicro1.Contracts.Input
+namespace Jmicro1.Contracts.Input
 {
     public static class Jmicro1AchievementQueue
     {

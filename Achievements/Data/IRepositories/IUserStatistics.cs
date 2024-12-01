@@ -11,6 +11,6 @@ namespace Achievements.Data.IRepositories
 
         Task CreateAsync(UserChatStats userChatStats);
 
-        Task Update(UserChatStats userChatStats);
+        Task UpdateAsync(UserChatStats userChatStats);
     }
 }

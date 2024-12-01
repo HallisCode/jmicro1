@@ -1,14 +1,9 @@
-using Achievements.Contracts.Models.Output;
-using Achievements.Contracts.Output;
-using jmicro1.Consumers;
-using jmicro1.Contracts;
-using jmicro1.Contracts.Input;
-using jmicro1.Contracts.Output;
+using Jmicro1.Consumers;
+using Jmicro1.Contracts.Input;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
-using RabbitMQ.Client;
 
-namespace jmicro1.Configuration
+namespace Jmicro1.Configuration
 {
     public static class AddConfiguredMassTransitExtension
     {
@@ -22,7 +17,7 @@ namespace jmicro1.Configuration
             services.AddMassTransit((IBusRegistrationConfigurator x) =>
             {
                 x.AddConsumer<AchievementAwardedConsumer>();
-                x.AddConsumer<GiveOutAchievementListConsumer>();
+                x.AddConsumer<DisplayAchievementListConsumer>();
 
                 x.UsingRabbitMq((context, configRabbitMQ) =>
                 {
@@ -40,7 +35,7 @@ namespace jmicro1.Configuration
                         config =>
                         {
                             config.Consumer<AchievementAwardedConsumer>(context);
-                            config.Consumer<GiveOutAchievementListConsumer>(context);
+                            config.Consumer<DisplayAchievementListConsumer>(context);
                         });
                 });
             });

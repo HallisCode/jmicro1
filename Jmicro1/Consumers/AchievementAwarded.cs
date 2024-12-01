@@ -1,12 +1,11 @@
 using System.Threading.Tasks;
-using Achievements.Contracts.Models.Output;
 using Achievements.Contracts.Output;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace jmicro1.Consumers
+namespace Jmicro1.Consumers
 {
     public class AchievementAwardedConsumer : IConsumer<AchievementAwarded>
     {
@@ -27,8 +26,7 @@ namespace jmicro1.Consumers
 
             string message = $"Поздравляем @{context.Message.Update.Message.From!.Username}, " +
                              $"с получением титула '{context.Message.Title}' за {context.Message.Messages} написанных сообщений.";
-
-            await _telegramBot.SendTextMessageAsync(
+            _telegramBot.SendTextMessageAsync(
                 chatId: chatId,
                 text: message,
                 replyParameters: new ReplyParameters()

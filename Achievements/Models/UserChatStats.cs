@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using MongoDB.Bson;
 
 namespace Achievements.Models
@@ -9,14 +10,14 @@ namespace Achievements.Models
         public long ChatId { get; set; }
         public long UserId { get; set; }
 
-        public string[] Awards { get; set; }
+        public List<string> Awards { get; set; }
         public long Messages { get; set; }
 
         public UserChatStats(
             long chatId,
             long userId,
             long messages = 0,
-            string[]? awards = null)
+            List<string>? awards = null)
         {
             ChatId = chatId;
             UserId = userId;
@@ -24,7 +25,7 @@ namespace Achievements.Models
 
             if (awards is null)
             {
-                awards = Array.Empty<string>();
+                awards = new List<string>();
             }
 
             Awards = awards;

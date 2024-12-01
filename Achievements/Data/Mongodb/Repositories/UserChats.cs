@@ -29,7 +29,7 @@ namespace Achievements.Data.Mongodb.Repositories
             await _mongoDbContext.SaveChangesAsync();
         }
 
-        public async Task Update(UserChatStats userChatStats)
+        public async Task UpdateAsync(UserChatStats userChatStats)
         {
             _mongoDbContext.Update(userChatStats);
 

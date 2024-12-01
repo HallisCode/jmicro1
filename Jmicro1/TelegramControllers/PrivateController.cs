@@ -7,7 +7,7 @@ using Telegram.Bot.Types.Enums;
 using TeleRoute.Infrastructure.Routing.Attributes;
 using TeleRoute.Infrastructure.Routing.Filters;
 
-namespace jmicro1.TelegramControllers
+namespace Jmicro1.TelegramControllers
 {
     [TeleRoute]
     [PrivateChatFilter]

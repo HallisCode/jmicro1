@@ -16,7 +16,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Achievements.Contracts\Achievements.Contracts.csproj"/>
-        <ProjectReference Include="..\jmicro1.Contracts\jmicro1.Contracts.csproj"/>
+        <ProjectReference Include="..\Jmicro1.Contracts\Jmicro1.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>

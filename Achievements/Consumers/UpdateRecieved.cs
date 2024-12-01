@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Achievements.Contracts.Models.Output;
 using Achievements.Contracts.Output;
 using Achievements.Models;
 using Achievements.Services.Abstractions;
-using jmicro1.Contracts.Input;
-using jmicro1.Contracts.Output;
+using Jmicro1.Contracts.Input;
+using Jmicro1.Contracts.Output;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
@@ -48,10 +47,11 @@ namespace Achievements.Consumers
                 }
 
                 await HandleCommandAsync(context);
-                return;
             }
-
-            await HandleCommonUpdateAsync(context);
+            else
+            {
+                await HandleCommonUpdateAsync(context);
+            }
         }
 
         private async Task HandleCommandAsync(ConsumeContext<UpdateReceived> context)
@@ -87,10 +87,10 @@ namespace Achievements.Consumers
                         );
                     }
 
-                    GiveOutAchievementList giveOutAchievementList =
-                        new GiveOutAchievementList(_achievements, context.Message.Update);
+                    DisplayAchievementList displayAchievementList =
+                        new DisplayAchievementList(_achievements, context.Message.Update);
 
-                    await endpoint.Send<GiveOutAchievementList>(giveOutAchievementList);
+                    await endpoint.Send<DisplayAchievementList>(displayAchievementList);
 
                     break;
 
@@ -145,8 +145,6 @@ namespace Achievements.Consumers
 
             if (achievement is not null)
             {
-                _logger.LogInformation($"Achievement {achievement.Title} was sent!");
-
                 await _publishEndpoint.Publish<AchievementAwarded>(new AchievementAwarded(
                     update: context.Message.Update,
                     title: achievement.Title,

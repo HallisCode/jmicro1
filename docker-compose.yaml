@@ -1,0 +1,47 @@
+services:
+    jmicro1:
+        image: jmicro1:1.0
+        environment:
+            RabbitMQ:host: rabbitmq
+            RabbitMQ:username: ${RABBITMQ_USER}
+            RabbitMQ:password: ${RABBITMQ_PASS}
+            TELEGRAM_BOT_TOKEN: 7613108456:AAEtTg-HDQfZ-tNwB8_sbdVNx83g84RlcxY
+
+        depends_on:
+            - achievement
+        ports:
+            - "8080:8080"
+
+    achievement:
+        image: achievement:1.0
+        environment:
+            RabbitMQ:host: rabbitmq
+            RabbitMQ:username: ${RABBITMQ_USER}
+            RabbitMQ:password: ${RABBITMQ_PASS}
+            
+            MongoDb:host: mongodb
+            MongoDb:username: ${MONGO_ROOT_USERNAME}
+            MongoDb:password: ${MONGO_ROOT_PASSWORD}
+        depends_on:
+            - rabbitmq
+            - mongodb
+    
+    rabbitmq:
+        image: rabbitmq:3-management
+        environment:
+            RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+            RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+        volumes:
+            - rabbitmq:/var/lib/rabbitmq
+    
+    mongodb:
+        image: mongo
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+        volumes:
+            - mongodb:/data/db
+
+volumes:
+    mongodb:
+    rabbitmq:

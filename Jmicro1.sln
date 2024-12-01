@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jmicro1", "jmicro1\jmicro1.csproj", "{78F55CA2-0B46-4B82-AF3C-DA842C624B2A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jmicro1", "Jmicro1\Jmicro1.csproj", "{78F55CA2-0B46-4B82-AF3C-DA842C624B2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jmicro1.Contracts", "jmicro1.Contracts\jmicro1.Contracts.csproj", "{91775243-6C85-4A0B-B879-8C9D5BF4AD24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jmicro1.Contracts", "Jmicro1.Contracts\Jmicro1.Contracts.csproj", "{91775243-6C85-4A0B-B879-8C9D5BF4AD24}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Achievements", "Achievements\Achievements.csproj", "{CC201306-7D17-4D87-88A3-58D7553D8C6E}"
 EndProject

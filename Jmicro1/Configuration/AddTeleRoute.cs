@@ -1,10 +1,10 @@
 using System;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Telegram.Bot;
 using TeleRoute.Core.Routing;
 using TeleRoute.Infrastructure.Routing;
 
-namespace jmicro1.Configuration
+namespace Jmicro1.Configuration
 {
     public static class AddTeleRouteExtension
     {

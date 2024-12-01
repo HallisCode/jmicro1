@@ -31,8 +31,10 @@ namespace Achievements
 
             // DI: MongoDb
             builder.Services.AddConfiguredMongoDb(
-                builder.Configuration["MongoDb:connectionString"]!,
-                builder.Configuration["MongoDb:dbName"]!
+                host: builder.Configuration["MongoDb:host"]!,
+                username: builder.Configuration["MongoDb:username"]!,
+                password: builder.Configuration["MongoDb:password"]!,
+                dbName: builder.Configuration["MongoDb:dbName"]!
             );
 
 

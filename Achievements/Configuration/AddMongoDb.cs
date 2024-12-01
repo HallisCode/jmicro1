@@ -10,10 +10,12 @@ namespace Achievements.Configuration
     {
         public static void AddConfiguredMongoDb(
             this IServiceCollection services,
-            string stringConnectMongoDb,
+            string host,
+            string username,
+            string password,
             string dbName)
         {
-            IMongoClient mongoClient = new MongoClient(stringConnectMongoDb);
+            IMongoClient mongoClient = new MongoClient($"mongodb://{username}:{password}@{host}/");
 
             InitializerMongoDb.Initialize(mongoClient);
 

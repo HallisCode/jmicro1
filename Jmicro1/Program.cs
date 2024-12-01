@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
+using Jmicro1.Middlewares;
 using Microsoft.Extensions.Configuration;
 using Telegram.Bot.Types;
-using jmicro1.Configuration;
-using jmicro1.Middlewares;
+using Jmicro1.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot;
 
-namespace jmicro1;
+namespace Jmicro1;
 
 class Program
 {
@@ -30,7 +30,8 @@ class Program
         webAppBuilder.Services.ConfigureTelegramBotMvc();
 
         // DI: TeleRoute
-        webAppBuilder.Services.AddTeleRoute(opt => { opt.AddFromAssembly(typeof(Program).Assembly); });
+        webAppBuilder.Services.AddTeleRoute(opt => { opt.AddFromAssembly(typeof(Program).Assembly); }
+        );
 
         // DI: logic services
 

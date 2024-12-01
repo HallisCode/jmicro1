@@ -1,5 +1,4 @@
-﻿using Achievements.Contracts.Models.Output;
-using Telegram.Bot.Types;
+﻿using Telegram.Bot.Types;
 
 namespace Achievements.Contracts.Output
 {
@@ -14,10 +13,12 @@ namespace Achievements.Contracts.Output
         {
         }
 
-        public AchievementAwarded(
+        public AchievementAwarded
+        (
             Update update,
             string title,
-            long messages)
+            long messages
+            )
         {
             Update = update;
             Title = title;

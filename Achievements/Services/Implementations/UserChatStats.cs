@@ -29,8 +29,7 @@ namespace Achievements.Services.Implementations
                 var newUserChatStat = new UserChatStats(
                     chatId: chatId,
                     userId: userId,
-                    messages: 1,
-                    awards: System.Array.Empty<string>()
+                    messages: 1
                 );
 
                 await _userChatStatsRepository.CreateAsync(newUserChatStat);
@@ -41,7 +40,7 @@ namespace Achievements.Services.Implementations
             // ОБновляем статистику
             userChatStats.Messages += 1;
 
-            await _userChatStatsRepository.Update(userChatStats);
+            await _userChatStatsRepository.UpdateAsync(userChatStats);
 
             return userChatStats;
         }

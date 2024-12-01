@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace jmicro1.Middlewares
+namespace Jmicro1.Middlewares
 {
     public class ExceptionMiddleware
     {
